@@ -39,6 +39,7 @@ public protocol ActiveLabelDelegate: class {
     @IBInspectable public var lineSpacing: Float? {
         didSet { updateTextStorage(parseText: false) }
     }
+    public var mentionCharacter: String? = "@"
     
     // MARK: - public methods
     public func handleMentionTap(handler: (String) -> ()) {
@@ -242,7 +243,7 @@ public protocol ActiveLabelDelegate: class {
         activeElements[.Hashtag]?.appendContentsOf(hashtagElements)
         
         //MENTIONS
-        let mentionElements = ActiveBuilder.createMentionElements(fromText: textString, range: textRange)
+        let mentionElements = ActiveBuilder.createMentionElements(fromText: textString, range: textRange, mentionCharacter: mentionCharacter)
         activeElements[.Mention]?.appendContentsOf(mentionElements)
     }
 

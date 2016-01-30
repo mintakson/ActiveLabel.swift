@@ -18,8 +18,8 @@ struct RegexParser {
     static let mentionRegex = try? NSRegularExpression(pattern: "(?:^|\\s|$|[.])@[a-z0-9_]*", options: [.CaseInsensitive])
     static let urlDetector = try? NSRegularExpression(pattern: urlPattern, options: [.CaseInsensitive])
     
-    static func getMentions(fromText text: String, range: NSRange) -> [NSTextCheckingResult] {
-        guard let mentionRegex = mentionRegex else { return [] }
+    static func getMentions(fromText text: String, range: NSRange, mentionCharacter: String) -> [NSTextCheckingResult] {
+        guard let mentionRegex = mentionRegex(mentionCharacter) else { return [] }
         return mentionRegex.matchesInString(text, options: [], range: range)
     }
     
@@ -33,4 +33,14 @@ struct RegexParser {
         return urlDetector.matchesInString(text, options: [], range: range)
     }
     
+    private static var mentionRegexs = [NSRegularExpression]
+    private static func mentionRegex(mentionCharacter: String) -> NSRegularExpression {
+        if let mentionRegex = mentionRegexs[mentionCharacter] {
+            return mentionRegex
+        } else {
+            let mentionRegex = try? NSRegularExpression(pattern: "(?:^|\\s|$|[.])\(mentionCharacter)[a-z0-9_]*", options: [.CaseInsensitive])
+            mentionRegexs[mentionCharacter] = mentionRegex
+            return mentionRegex
+        }
+    }
 }
