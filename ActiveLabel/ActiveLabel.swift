@@ -39,7 +39,9 @@ public protocol ActiveLabelDelegate: class {
     @IBInspectable public var lineSpacing: Float? {
         didSet { updateTextStorage(parseText: false) }
     }
-    public var mentionCharacter: String? = "@"
+    public var mentionCharacter: String = "@" {
+        didSet {}
+    }
     
     // MARK: - public methods
     public func handleMentionTap(handler: (String) -> ()) {
@@ -176,7 +178,7 @@ public protocol ActiveLabelDelegate: class {
         // clean up previous active elements
         guard let attributedText = attributedText
             where attributedText.length > 0 else {
-            return
+                return
         }
         
         let mutAttrString = addLineBreak(attributedText)
@@ -188,11 +190,9 @@ public protocol ActiveLabelDelegate: class {
             parseTextAndExtractActiveElements(mutAttrString)
         }
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.addLinkAttribute(mutAttrString)
-            self.textStorage.setAttributedString(mutAttrString)
-            self.setNeedsDisplay()
-        }
+        self.addLinkAttribute(mutAttrString)
+        self.textStorage.setAttributedString(mutAttrString)
+        self.setNeedsDisplay()
     }
     
     private func textOrigin(inRect rect: CGRect) -> CGPoint {

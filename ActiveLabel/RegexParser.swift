@@ -11,7 +11,7 @@ import Foundation
 struct RegexParser {
     
     static let urlPattern = "(^|[\\s.:;?\\-\\]<\\(])" +
-    "((https?://|www.|pic.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
+        "((https?://|www.|pic.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
     "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
     
     static let hashtagRegex = try? NSRegularExpression(pattern: "(?:^|\\s|$)#[a-z0-9_]*", options: [.CaseInsensitive])
@@ -33,8 +33,8 @@ struct RegexParser {
         return urlDetector.matchesInString(text, options: [], range: range)
     }
     
-    private static var mentionRegexs = [NSRegularExpression]
-    private static func mentionRegex(mentionCharacter: String) -> NSRegularExpression {
+    private static var mentionRegexs: [String: NSRegularExpression] = [:]
+    private static func mentionRegex(mentionCharacter: String) -> NSRegularExpression? {
         if let mentionRegex = mentionRegexs[mentionCharacter] {
             return mentionRegex
         } else {
