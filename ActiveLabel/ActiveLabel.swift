@@ -91,13 +91,14 @@ public protocol ActiveLabelDelegate: class {
     }
     
     public override func drawTextInRect(rect: CGRect) {
-        let range = NSRange(location: 0, length: textStorage.length)
-        
-        textContainer.size = rect.size
-        let newOrigin = textOrigin(inRect: rect)
-        
-        layoutManager.drawBackgroundForGlyphRange(range, atPoint: newOrigin)
-        layoutManager.drawGlyphsForGlyphRange(range, atPoint: newOrigin)
+        super.drawTextInRect(rect)
+//        let range = NSRange(location: 0, length: textStorage.length)
+//        
+//        textContainer.size = rect.size
+//        let newOrigin = textOrigin(inRect: rect)
+//        
+//        layoutManager.drawBackgroundForGlyphRange(range, atPoint: newOrigin)
+//        layoutManager.drawGlyphsForGlyphRange(range, atPoint: newOrigin)
     }
     
     public override func sizeThatFits(size: CGSize) -> CGSize {
@@ -181,7 +182,7 @@ public protocol ActiveLabelDelegate: class {
                 return
         }
         
-        let mutAttrString = addLineBreak(attributedText)
+        let mutAttrString = NSMutableAttributedString(attributedString: attributedText)
 
         if parseText {
             for (type, _) in activeElements {
